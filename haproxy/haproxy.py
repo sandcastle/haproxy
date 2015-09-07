@@ -30,6 +30,7 @@ class Haproxy(object):
     envvar_extra_global_settings = os.getenv("EXTRA_GLOBAL_SETTINGS")
     envvar_extra_default_settings = os.getenv("EXTRA_DEFAULT_SETTINGS")
     envvar_http_basic_auth = os.getenv("HTTP_BASIC_AUTH")
+    envvar_debug = os.getenv("DEBUG", False)
 
     # envvar overwritable
     envvar_balance = os.getenv("BALANCE", "roundrobin")
@@ -205,6 +206,9 @@ class Haproxy(object):
                                "stats realm Haproxy\ Statistics",
                                "stats uri /",
                                "stats auth %s" % cls.envvar_stats_auth]
+
+        if cls.envvar_debug:
+            cfg["global"].append("debug")
 
         for opt in cls.envvar_option:
             if opt:
